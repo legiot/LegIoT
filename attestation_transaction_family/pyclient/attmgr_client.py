@@ -25,6 +25,7 @@ It accepts input from a client CLI/GUI/BUI or other interface.
 '''
 
 import hashlib
+import base64
 import random
 import time
 import requests
@@ -32,11 +33,10 @@ import yaml
 import cbor
 import logging
 
-import json
+
 from threading import Thread
 
 from sawtooth_sdk.protobuf import events_pb2
-import paho.mqtt.client as paho
 from sawtooth_signing import create_context
 from sawtooth_signing import CryptoFactory
 from sawtooth_signing import ParseError
@@ -46,11 +46,6 @@ from sawtooth_sdk.protobuf.transaction_pb2 import Transaction
 from sawtooth_sdk.protobuf.batch_pb2 import BatchList
 from sawtooth_sdk.protobuf.batch_pb2 import BatchHeader
 from sawtooth_sdk.protobuf.batch_pb2 import Batch
-
-broker = "broker"  # port
-port = 1883
-device_id='admin'
-trustmngt_topic="trust-admin"
 
 LOGGER = logging.getLogger(__name__)
 
@@ -78,13 +73,7 @@ class AttestationManagerClient(object):
            Mainly getting the key pair and computing the address.
         '''
         self._base_url = base_url
-        self.client = paho.Client(device_id)
-        self.client.message_callback_add(trustmngt_topic, self.on_message)
-        self.client.connect(broker, port)
-        self.client.subscribe(trustmngt_topic,0)
-        self.client.loop_start()
-        self.Answer = 'PENDING'
-        self.Batch_ID=''
+
         if key_file is None:
             self._signer = None
             return
@@ -114,12 +103,6 @@ class AttestationManagerClient(object):
     def getPublicKey(self):
         return self._public_key
 
-    def on_message(self,mosq, obj, msg):
-        m_decode = msg.payload.decode("utf-8", "ignore")
-        m_in = json.loads(m_decode)  # decode json data
-        Batch_ID = m_in['batch_id']
-        if Batch_ID == self.Batch_ID:
-           self.Answer = m_in['Answer']
     # For each CLI command, add a method to:
     # 1. Do any additional handling, if required
     # 2. Create a transaction and a batch
@@ -136,7 +119,7 @@ class AttestationManagerClient(object):
         input_address_list = ['00b10c00', '00b10c01', storageAddress]
         input_address_list.extend(administrationAddresses)
         output_address_list = ['00b10c00', '00b10c01', storageAddress]
-        return self._wrap_and_send("submitEvidence", evidence, input_address_list, output_address_list, wait=15)
+        return self._wrap_and_send("submitEvidence", evidence, input_address_list, output_address_list, wait=10)
 
     def submitTrustQuery(self, payload):
         '''Submit a Trust Query to validator.'''
@@ -162,9 +145,61 @@ class AttestationManagerClient(object):
         LOGGER.info('Sending TrustQuery...')
         #result = start_new_thread(self._wrap_and_send("trustQuery", payload, input_address_list, output_address_list, wait=10))
         '''
-        result = self._wrap_and_send("trustQuery", payload, input_address_list, output_address_list, wait=15)
+        result = self._wrap_and_send("trustQuery", payload, input_address_list, output_address_list, wait=10)  
                                 
         return result
+
+    def _send_to_rest_api(self, suffix, data=None, content_type=None):
+        '''Send a REST command to the Validator via the REST API.
+
+           Called by _wrap_and_send().
+        '''
+        url = "{}/{}".format(self._base_url, suffix)
+        print("URL to send to REST API is {}".format(url))
+
+        headers = {}
+
+        if content_type is not None:
+            headers['Content-Type'] = content_type
+
+        try:
+            if data is not None:
+                result = requests.post(url, headers=headers, data=data)
+            else:
+                result = requests.get(url, headers=headers)
+
+            if not result.ok:
+                raise Exception("Error {}: {}".format(
+                    result.status_code, result.reason))
+        except requests.ConnectionError as err:
+            raise Exception(
+                'Failed to connect to {}: {}'.format(url, str(err)))
+        except BaseException as err:
+            raise Exception(err)
+
+        return result.text
+
+    def _wait_for_status(self, batch_id, wait, result):
+        '''Wait until transaction status is not PENDING (COMMITTED or error).
+
+           'wait' is time to wait for status, in seconds.
+        '''
+        if wait and wait > 0:
+            waited = 0
+            start_time = time.time()
+            while waited < wait:
+                result = self._send_to_rest_api("batch_statuses?id={}&wait={}"
+                                               .format(batch_id, wait))
+                status = yaml.safe_load(result)['data'][0]['status']
+                waited = time.time() - start_time
+
+                if status != 'PENDING':
+                    return result
+            return "Transaction timed out after waiting {} seconds." \
+               .format(wait)
+        else:
+            return result
+
 
     def _wrap_and_send(self, action, data, input_address_list, output_address_list, wait=None):
         '''Create a transaction, then wrap it in a batch.
@@ -215,32 +250,17 @@ class AttestationManagerClient(object):
             header=header,
             transactions=transaction_list,
             header_signature=self._signer.sign(header))
+
         # Create a Batch List from Batch above
         batch_list = BatchList(batches=[batch])
         batch_id = batch_list.batches[0].header_signature
-        #{client_id: device1, batch_id: jdkken455, batch_list: 4455535445}
-        data = {}
-        batch_bytes= batch_list.SerializeToString()
-        data['batch_list'] = str(batch_list.SerializeToString(), 'ISO-8859-1')
-        data['batch_id'] = batch_id
-        data['device_id']=device_id
-        self.Batch_ID= batch_id
-        json_data = json.dumps(data)
-        self.client.publish("trustmngt/Batch", json_data)
-        result =""
-        time.sleep(5)
-        if wait and wait > 0:
-            waited = 0
-            start_time = time.time()
-            while waited < wait:
-                result = self.Answer
-                waited = time.time() - start_time
-                if self.Answer != 'PENDING':
-                    return result
-            return "Transaction timed out after waiting {} seconds." \
-                .format(wait)
-        else:
-            return result
 
+        # Send batch_list to the REST API
+        result = self._send_to_rest_api("batches",
+                                       batch_list.SerializeToString(),
+                                       'application/octet-stream')
+
+        # Wait until transaction status is COMMITTED, error, or timed out
+        return self._wait_for_status(batch_id, wait, result)
 
 

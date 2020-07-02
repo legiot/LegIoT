@@ -16,16 +16,6 @@
 version: "2.1"
 
 services:
-  mqtt:
-      image: toke/mosquitto
- #     network_mode: bridge
-      container_name: broker
-      expose:
-        - 1883
-      ports:
-        - 1883:1883
-      restart: unless-stopped
-
 
   attmgr-processor:
     container_name: attmgr-processor
@@ -280,7 +270,7 @@ services:
       - validator
     volumes:
       - ".:/project/attestation_management/"
-       
+      
   subscriber:
     container_name: subscriber
     build:
@@ -370,8 +360,6 @@ services:
     depends_on:
       - validator
     entrypoint: sawtooth-rest-api -C tcp://validator:4004 --bind rest-api:8008
-    volumes:
-      - ".:/project/middlebox/"
     command: |
     #  bash -c "
      # python3-pip \

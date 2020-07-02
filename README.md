@@ -2,16 +2,14 @@
 
 #### Setup:
 1. Extract to destination.
-2. Run `docker-compose -f attestation.yml up`
-3. open a session on rest-api container, move to **/project/middlebox/middlebox** and start the middlebox
-    - `python3 Mqttc.py`
-4. Open a session with a administrator client:
+2. Run `docker-compose -f attestation_management_composer.yml up`
+3. Open a session with a administrator client:
 	- `docker exec -it administrator-client bash`
-5. Load administrative databases to the global state:
+4. Load administrative databases to the global state:
 	- `administration.py loadPolicyDB && administration.py loadAttestationPropertiesDB && administration.py loadSystemConfig && administration.py loadDeviceDB && administration.py loadWarrantDB`
-6. Open a session with any client (e.g., mes):
+5. Open a session with any client (e.g., mes):
 	- `docker exec -it mes bash`
-7. Submit evidences and trust queries. Example:
+6. Submit evidences and trust queries. Example:
 	```
     attmgr.py submitEvidence 066B 073B SWATT PLC 1.0 7A09AB47D4 true && 
 	attmgr.py submitEvidence 098D 066B DIAT Workstation 1.1 65CD9AD691 false && 

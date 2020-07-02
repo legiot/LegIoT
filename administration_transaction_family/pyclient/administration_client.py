@@ -25,13 +25,14 @@ It accepts input from a client CLI/GUI/BUI or other interface.
 '''
 
 import hashlib
+import base64
 import random
 import time
 import requests
 import yaml
 import cbor
 import logging
-import json
+
 from sawtooth_signing import create_context
 from sawtooth_signing import CryptoFactory
 from sawtooth_signing import ParseError
@@ -41,13 +42,9 @@ from sawtooth_sdk.protobuf.transaction_pb2 import Transaction
 from sawtooth_sdk.protobuf.batch_pb2 import BatchList
 from sawtooth_sdk.protobuf.batch_pb2 import BatchHeader
 from sawtooth_sdk.protobuf.batch_pb2 import Batch
-import paho.mqtt.client as paho
 
 LOGGER = logging.getLogger(__name__)
-broker = "broker"  # port
-port = 1883
-device_id='device1'
-trustmngt_topic="trust-device1"
+
 # The Transaction Family Name
 FAMILY_NAME = 'administration'
 # TF Prefix is first 6 characters of SHA-512("administration"), 5A7526
@@ -73,13 +70,7 @@ class AdministrationClient(object):
            Mainly getting the key pair and computing the address.
         '''
         self._base_url = base_url
-        self.client = paho.Client("device1")
-        self.client.message_callback_add(trustmngt_topic, self.on_message)
-        self.client.connect(broker, port)
-        self.client.subscribe(trustmngt_topic, 0)
-        self.client.loop_start()
-        self.Answer = 'PENDING'
-        self.Batch_ID = ''
+
         if key_file is None:
             self._signer = None
             return
@@ -110,12 +101,7 @@ class AdministrationClient(object):
     # 1. Do any additional handling, if required
     # 2. Create a transaction and a batch
     # 2. Send to REST API
-    def on_message(self,mosq, obj, msg):
-        m_decode = msg.payload.decode("utf-8", "ignore")
-        m_in = json.loads(m_decode)  # decode json data
-        Batch_ID = m_in['batch_id']
-        if Batch_ID == self.Batch_ID:
-           self.Answer = m_in['Answer']
+    
     # Handles properties submission
     def submitProperties(self, classificationList):
         '''Submit new properties to validator.'''
@@ -151,15 +137,6 @@ class AdministrationClient(object):
                 storageAddress)
         input_and_output_address_list = [storageAddress]
         return self._wrap_and_send("submitDevices", devices, input_and_output_address_list, wait=10)
-
-    # Handles Applications List submission
-    # def submitApplications(self, applications):
-    #     '''Submit new device list to validator.'''
-    #     storageAddress = _assembleAddress('APPLICATIONS')
-    #     LOGGER.info('Storage Address %s.',
-    #             storageAddress)
-    #     input_and_output_address_list = [storageAddress]
-    #     return self._wrap_and_send("submitApplications", applications, input_and_output_address_list, wait=10)
 
     # Handles Warramt List submission
     def submitWarrants(self, warrants):
@@ -274,32 +251,10 @@ class AdministrationClient(object):
         batch_list = BatchList(batches=[batch])
         batch_id = batch_list.batches[0].header_signature
 
-        data = {}
-        batch_bytes = batch_list.SerializeToString()
-        data['batch_list'] = str(batch_list.SerializeToString(), 'ISO-8859-1')
-        data['batch_id'] = batch_id
-        data['device_id'] = device_id
-        self.Batch_ID = batch_id
-        json_data = json.dumps(data)
-        self.client.publish("trustmngt/Batch", json_data)
-        result = ""
-        time.sleep(5)
-        if wait and wait > 0:
-            waited = 0
-            start_time = time.time()
-            while waited < wait:
-                result = self.Answer
-                waited = time.time() - start_time
-                if self.Answer != 'PENDING':
-                    return result
-            return "Transaction timed out after waiting {} seconds." \
-                .format(wait)
-        else:
-            return result
-    def newdevice(self,device_id,topic):
-        data = {}
-        data['topic'] = topic
-        data['device_id'] = device_id
-        json_data = json.dumps(data)
-        self.client.publish("trustmngt/admin", json_data)
+        # Send batch_list to the REST API
+        result = self._send_to_rest_api("batches",
+                                       batch_list.SerializeToString(),
+                                       'application/octet-stream')
 
+        # Wait until transaction status is COMMITTED, error, or timed out
+        return self._wait_for_status(batch_id, wait, result)

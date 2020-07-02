@@ -77,7 +77,6 @@ RUN \
     python3-sawtooth-cli \
  && apt-get clean \
  && pip3 install -U protobuf \
- &&  python3 -m pip install paho-mqtt \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /project/attestation_management/attestation_transaction_family/pyclient

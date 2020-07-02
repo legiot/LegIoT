@@ -39,7 +39,6 @@ import policies_pb2
 import systemconfig_pb2
 import devices_pb2
 import warrants_pb2
-#import application_pb2
 
 # hard-coded for simplicity (otherwise get the URL from the args in main):
 #DEFAULT_URL = 'tcp://localhost:4004'
@@ -125,9 +124,6 @@ class AdministrationTransactionHandler(TransactionHandler):
         elif action == "submitWarrants":
             address = handleWarrantsSubmission(context, payload)
             LOGGER.info("Warrants Address = %s", address)
-        # elif action == "submitApplications":
-        #     address = handleApplicationsSubmission(context, payload)
-        #     LOGGER.info("Applications Address = %s", address)
         else:
             LOGGER.info("Unhandled action. Action not legal!")
 
@@ -193,16 +189,6 @@ def handleDevicesSubmission(context, payload):
                         state_data)
     addresses = context.set_state({address: state_data})
     return addresses
-
-# def handleApplicationsSubmission(context, payload):
-#     ApplicationsList = application_pb2.ApplicationsList()
-#     ApplicationsList.ParseFromString(payload)
-#     address = _assembleAddress('APPLICATIONS')
-#     state_data = ApplicationsList.SerializeToString()
-#     LOGGER.info('State Data String: %s',
-#                         state_data)
-#     addresses = context.set_state({address: state_data})
-#     return addresses
 
 # Write the warrants database
 def handleWarrantsSubmission(context, payload):
