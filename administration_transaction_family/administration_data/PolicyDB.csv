@@ -1,0 +1,9 @@
+DeviceClass,AttestationType,Version,Warrant,Measurement
+PLC,SWATT,1.0,true,7A09AB47D4
+PLC,SWATT,1.1,true,69F3BCD492
+RTU,TrustLite,2.1,true,C956F3FE76
+Workstation,DIAT,1.1,false,65CD9AD691
+SCADA,TPM,1.0,false,D55B922B96
+Router,DIAT,2.0,false,43FF1C8872
+Server,SGX,1.3,false,EA7A0A8B47
+Server,SGX,1.4,false,745BE192F4

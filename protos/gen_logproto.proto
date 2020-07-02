@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package log_transaction_family;
+
+message transaction {
+  string ApplicationId = 1;
+  string timestamp = 2;
+  string Message = 3;
+  }
+

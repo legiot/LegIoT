@@ -1,0 +1,6 @@
+AttestationType,ReliabilityScore,TimeFunction,xmin,xmax
+SWATT,0.7,-0.003333333*x + 1.2,60,120
+TrustLite,0.8,-0.0006666667*x + 1.2,300,600
+TPM,0.9,-0.001666667*x + 2,600,1200
+SGX,0.9,-0.001666667*x + 2,600,1200
+DIAT,0.99,-0.001666667*x + 2,600,1200

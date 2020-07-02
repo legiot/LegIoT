@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+
+message application {
+  string ApplicationId = 1;
+  string Key =2;
+  }
+
+message ApplicationsList{
+	repeated application Applications = 1;
+}
+

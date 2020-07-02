@@ -1,0 +1,11 @@
+DeviceIdentity,DeviceClass,Version
+073B,PLC,1.0
+0CD1,PLC,1.1
+01E6,RTU,2.1
+066B,Workstation,1.1
+08FF,Workstation,1.1
+098D,SCADA,1.0
+04BE,Router,2.0
+0D76,Router,2.0
+0794,Server,1.4
+0B4D,Server,1.3

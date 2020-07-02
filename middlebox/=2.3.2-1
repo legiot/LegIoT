@@ -1,0 +1,119 @@
+Reading package lists...
+Building dependency tree...
+Reading state information...
+python3-yaml is already the newest version (3.11-3build1).
+python3-yaml set to manually installed.
+python3-colorlog is already the newest version (2.6.0-1).
+python3-colorlog set to manually installed.
+python3-toml is already the newest version (0.9.1-1).
+python3-toml set to manually installed.
+python3-zmq is already the newest version (15.2.0-0ubuntu4).
+python3-zmq set to manually installed.
+python3-aiodns is already the newest version (1.1.1-1).
+python3-aiodns set to manually installed.
+python3-aiohttp is already the newest version (2.3.2-1).
+python3-aiohttp set to manually installed.
+python3-async-timeout is already the newest version (1.2.0-1).
+python3-async-timeout set to manually installed.
+python3-cchardet is already the newest version (2.0a3-1).
+python3-cchardet set to manually installed.
+python3-multidict is already the newest version (2.1.4-1).
+python3-multidict set to manually installed.
+python3-protobuf is already the newest version (3.4.1-0~maarten0).
+python3-protobuf set to manually installed.
+python3-pycares is already the newest version (2.1.1-1).
+python3-pycares set to manually installed.
+python3-pyformance is already the newest version (0.4-1).
+python3-pyformance set to manually installed.
+python3-secp256k1 is already the newest version (0.13.2-1).
+python3-secp256k1 set to manually installed.
+python3-yarl is already the newest version (0.10.0-1).
+python3-yarl set to manually installed.
+The following additional packages will be installed:
+  binutils bzip2 cpp cpp-5 cron dbus distro-info-data dpkg-dev fakeroot g++
+  g++-5 gcc gcc-5 gcc-5-base gir1.2-glib-2.0 ifupdown iproute2 isc-dhcp-client
+  isc-dhcp-common iso-codes javascript-common krb5-locales
+  libalgorithm-diff-perl libalgorithm-diff-xs-perl libalgorithm-merge-perl
+  libasan2 libasn1-8-heimdal libatm1 libatomic1 libbz2-1.0 libc-dev-bin libc6
+  libc6-dev libcap-ng0 libcc1-0 libcilkrts5 libcurl3-gnutls libdbus-1-3
+  libdbus-glib-1-2 libdns-export162 libdpkg-perl libexpat1 libexpat1-dev
+  libfakeroot libfile-fcntllock-perl libgcc-5-dev libgdbm3
+  libgirepository-1.0-1 libglib2.0-0 libglib2.0-data libgnutls30 libgomp1
+  libgssapi-krb5-2 libgssapi3-heimdal libhcrypto4-heimdal libheimbase1-heimdal
+  libheimntlm0-heimdal libhogweed4 libhx509-5-heimdal libicu55 libidn11
+  libisc-export160 libisl15 libitm1 libjs-jquery libjs-jquery-hotkeys
+  libjs-jquery-isonscreen libjs-jquery-metadata libjs-jquery-tablesorter
+  libk5crypto3 libkeyutils1 libkrb5-26-heimdal libkrb5-3 libkrb5support0
+  libldap-2.4-2 liblsan0 libmnl0 libmpc3 libmpfr4 libmpx0 libnettle6
+  libp11-kit0 libperl5.22 libpq5 libpython3-dev libpython3.5 libpython3.5-dev
+  libpython3.5-minimal libpython3.5-stdlib libquadmath0 libroken18-heimdal
+  librtmp1 libsasl2-2 libsasl2-modules libsasl2-modules-db libssl-doc
+  libssl1.0.0 libstdc++-5-dev libstdc++6 libtasn1-6 libtsan0 libubsan0
+  libwind0-heimdal libxml2 libxtables11 linux-libc-dev lsb-release make
+  manpages manpages-dev netbase openssl patch perl perl-base perl-modules-5.22
+  powermgmt-base python-apt-common python-pip-whl python3-apt python3-coverage
+  python3-dbus python3-gi python3-idna python3-py python3-pyasn1
+  python3-pycurl python3-setuptools python3-software-properties
+  python3-sqlalchemy python3-urllib3 python3-wheel python3.5 python3.5-dev
+  python3.5-minimal rename sgml-base shared-mime-info ucf unattended-upgrades
+  xdg-user-dirs xml-core xz-utils zlib1g zlib1g-dev
+Suggested packages:
+  binutils-doc bzip2-doc cpp-doc gcc-5-locales anacron logrotate checksecurity
+  exim4 | postfix | mail-transport-agent dbus-user-session | dbus-x11
+  debian-keyring g++-multilib g++-5-multilib gcc-5-doc libstdc++6-5-dbg
+  gcc-multilib autoconf automake libtool flex bison gdb gcc-doc gcc-5-multilib
+  libgcc1-dbg libgomp1-dbg libitm1-dbg libatomic1-dbg libasan2-dbg
+  liblsan0-dbg libtsan0-dbg libubsan0-dbg libcilkrts5-dbg libmpx0-dbg
+  libquadmath0-dbg ppp rdnssd iproute2-doc resolvconf avahi-autoipd
+  isc-dhcp-client-ddns apparmor isoquery apache2 | lighttpd | httpd glibc-doc
+  locales gnutls-bin krb5-doc krb5-user libsasl2-modules-otp
+  libsasl2-modules-ldap libsasl2-modules-sql libsasl2-modules-gssapi-mit
+  | libsasl2-modules-gssapi-heimdal libstdc++-5-doc lsb make-doc man-browser
+  ed diffutils-doc perl-doc libterm-readline-gnu-perl
+  | libterm-readline-perl-perl python3-apt-dbg python-apt-doc python-dbus-doc
+  python3-dbus-dbg python-nose2 python-nose2-doc python-psycopg2-doc
+  subversion doc-base libcurl4-gnutls-dev python-pycurl-doc python3-pycurl-dbg
+  python3-ndg-httpsclient python3-openssl python-setuptools-doc
+  python-sqlalchemy-doc python3-pymysql python3-fdb python3.5-venv
+  python3.5-doc binfmt-support sgml-base-doc bsd-mailx default-mta
+  | mail-transport-agent needrestart debhelper
+The following NEW packages will be installed:
+  apt-transport-https binutils build-essential bzip2 ca-certificates cpp cpp-5
+  cron dbus distro-info-data dpkg-dev fakeroot g++ g++-5 gcc gcc-5
+  gir1.2-glib-2.0 ifupdown inetutils-ping iproute2 isc-dhcp-client
+  isc-dhcp-common iso-codes javascript-common krb5-locales
+  libalgorithm-diff-perl libalgorithm-diff-xs-perl libalgorithm-merge-perl
+  libasan2 libasn1-8-heimdal libatm1 libatomic1 libc-dev-bin libc6-dev
+  libcap-ng0 libcc1-0 libcilkrts5 libcurl3-gnutls libdbus-1-3 libdbus-glib-1-2
+  libdns-export162 libdpkg-perl libexpat1-dev libfakeroot libffi-dev
+  libfile-fcntllock-perl libgcc-5-dev libgdbm3 libgirepository-1.0-1
+  libglib2.0-0 libglib2.0-data libgnutls30 libgomp1 libgssapi-krb5-2
+  libgssapi3-heimdal libhcrypto4-heimdal libheimbase1-heimdal
+  libheimntlm0-heimdal libhogweed4 libhx509-5-heimdal libicu55 libidn11
+  libisc-export160 libisl15 libitm1 libjs-jquery libjs-jquery-hotkeys
+  libjs-jquery-isonscreen libjs-jquery-metadata libjs-jquery-tablesorter
+  libk5crypto3 libkeyutils1 libkrb5-26-heimdal libkrb5-3 libkrb5support0
+  libldap-2.4-2 liblsan0 libmnl0 libmpc3 libmpfr4 libmpx0 libnettle6
+  libp11-kit0 libperl5.22 libpq5 libpython3-dev libpython3.5 libpython3.5-dev
+  libquadmath0 libroken18-heimdal librtmp1 libsasl2-2 libsasl2-modules
+  libsasl2-modules-db libssl-dev libssl-doc libstdc++-5-dev libtasn1-6
+  libtsan0 libubsan0 libwind0-heimdal libxml2 libxtables11 linux-libc-dev
+  lsb-release make manpages manpages-dev netbase openssl patch perl
+  perl-modules-5.22 powermgmt-base python-apt-common python-pip-whl
+  python3-aiopg python3-apt python3-bitcoin python3-cbor python3-cov-core
+  python3-coverage python3-cryptography python3-cryptography-vectors
+  python3-dbus python3-dev python3-gi python3-grpcio python3-grpcio-tools
+  python3-idna python3-lmdb python3-netifaces python3-nose2 python3-pip
+  python3-psycopg2 python3-py python3-pyasn1 python3-pycurl python3-pytest
+  python3-pytest-runner python3-pytz python3-requests python3-sawtooth-cli
+  python3-setuptools python3-setuptools-scm python3-software-properties
+  python3-sqlalchemy python3-urllib3 python3-wheel python3.5-dev rename
+  sgml-base shared-mime-info software-properties-common ucf
+  unattended-upgrades xdg-user-dirs xml-core xz-utils zlib1g-dev
+The following packages will be upgraded:
+  gcc-5-base libbz2-1.0 libc6 libexpat1 libpython3.5-minimal
+  libpython3.5-stdlib libssl1.0.0 libstdc++6 perl-base python3-sawtooth-sdk
+  python3.5 python3.5-minimal zlib1g
+The following packages will be DOWNGRADED:
+  python3-chardet python3-six
+13 upgraded, 160 newly installed, 2 downgraded, 0 to remove and 40 not upgraded.
